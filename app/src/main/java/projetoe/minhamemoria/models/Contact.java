@@ -1,12 +1,13 @@
 package projetoe.minhamemoria.models;
 
 public class Contact {
-    private int id;
+    private long id;
     private String name;
     private String number;
 
     public Contact(String name, String number) {
         try {
+            setId(-1);
             setName(name);
             setNumber(number);
         } catch(Exception e) {
@@ -16,11 +17,11 @@ public class Contact {
         }
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -72,9 +73,9 @@ public class Contact {
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (number != null ? number.hashCode() : 0);
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + name.hashCode();
+        result = 31 * result + number.hashCode();
         return result;
     }
 }

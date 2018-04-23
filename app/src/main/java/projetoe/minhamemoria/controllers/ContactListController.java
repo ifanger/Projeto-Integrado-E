@@ -16,11 +16,20 @@ public class ContactListController {
     private SQLiteDatabase db;
     private ContactListHelper dbHelper;
 
+    /**
+     * Cria uma instância do controlador da lista de contatos.
+     * @param context Contexto.
+     */
     public ContactListController(Context context) {
         dbHelper = new ContactListHelper(context);
     }
 
-    public boolean addContact(Contact contact) {
+    /**
+     * Adiciona um contato no banco de dados.
+     * @param contact Contato a ser salvo no banco de dados.
+     * @return Id do usuário inserido.
+     */
+    public long addContact(Contact contact) {
         ContentValues values;
         long result;
 
@@ -33,16 +42,20 @@ public class ContactListController {
         result = db.insert(ContactListContract.ContactEntry.TABLE_NAME, null, values);
         db.close();
 
-        return result != -1;
+        return result;
     }
 
+    /**
+     * Obtém a lista de todos os contatos.
+     * @return Lista de todos os contatos.
+     */
     public List<Contact> getContactList() {
         List<Contact> contactList = new ArrayList<>();
 
         Cursor cursor;
         String[] fields =  {ContactListContract.ContactEntry.COLUMN_NAME, ContactListContract.ContactEntry.COLUMN_NUMBER};
 
-        db = dbHelper.getWritableDatabase();
+        db = dbHelper.getReadableDatabase();
 
         cursor = db.query(ContactListContract.ContactEntry.TABLE_NAME, fields, null, null, null, null, null, null);
 
@@ -54,6 +67,8 @@ public class ContactListController {
                         cursor.getString(cursor.getColumnIndex(ContactListContract.ContactEntry.COLUMN_NAME)),
                         cursor.getString(cursor.getColumnIndex(ContactListContract.ContactEntry.COLUMN_NUMBER))
                 );
+
+                contact.setId(cursor.getLong(cursor.getColumnIndex(ContactListContract.ContactEntry._ID)));
 
                 contactList.add(contact);
                 cursor.moveToNext();
@@ -67,5 +82,79 @@ public class ContactListController {
         db.close();
 
         return contactList;
+    }
+
+    /**
+     * Atualiza um contato no banco de dados.
+     * @param contact Contato a ser atualizado.
+     * @return Se a operação foi bem sucedida.
+     */
+    public boolean update(Contact contact) {
+        if(contact.getId() == -1) {
+            System.out.println("Invalid contact id.");
+            return false;
+        }
+
+        db = dbHelper.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(ContactListContract.ContactEntry.COLUMN_NAME, contact.getName());
+        contentValues.put(ContactListContract.ContactEntry.COLUMN_NUMBER, contact.getNumber());
+
+        db.update(ContactListContract.ContactEntry.TABLE_NAME, contentValues, ContactListContract.ContactEntry._ID + contact.getId(), null);
+        db.close();
+
+        return true;
+    }
+
+    /**
+     * Remove um contato do banco de dados.
+     * @param contact Contato a ser removido.
+     * @return Estado da remoção.
+     */
+    public boolean delete(Contact contact) {
+        if(contact.getId() == -1) {
+            System.out.println("Invalid contact id.");
+            return false;
+        }
+
+        db = dbHelper.getWritableDatabase();
+
+        int result = db.delete(
+                ContactListContract.ContactEntry.TABLE_NAME,
+                ContactListContract.ContactEntry._ID + "=" + contact.getId(),
+                null
+        );
+
+        db.close();
+
+        return result > 0;
+    }
+
+    /**
+     * Retorna um contato a partir da id.
+     * @param id Id do contato.
+     * @return Contato.
+     * @throws Exception Caso o nome ou o número guardado sejam invalidos.
+     */
+    public Contact get(long id) throws Exception {
+        Contact contact = new Contact("Desconhecido", "0000-0000");
+        Cursor cursor;
+
+        db = dbHelper.getReadableDatabase();
+
+        cursor = db.rawQuery("SELECT * FROM " + ContactListContract.ContactEntry.TABLE_NAME + " WHERE id=" + id, null);
+
+        if(cursor.getCount() > 0) {
+            cursor.moveToFirst();
+
+            contact.setName(cursor.getString(cursor.getColumnIndex(ContactListContract.ContactEntry.COLUMN_NAME)));
+            contact.setNumber(cursor.getString(cursor.getColumnIndex(ContactListContract.ContactEntry.COLUMN_NUMBER)));
+        }
+
+        cursor.close();
+        db.close();
+
+        return contact;
     }
 }
