@@ -2,9 +2,9 @@ package projetoe.minhamemoria.db.contracts;
 
 import android.provider.BaseColumns;
 
-public final class ListsContract {
+public final class ListContract {
 
-    private ListsContract() {}
+    private ListContract() {}
 
     public static class ListEntry implements BaseColumns {
         public static final String TABLE_NAME = "listas";

@@ -53,9 +53,9 @@ public class ContactListController {
         List<Contact> contactList = new ArrayList<>();
 
         Cursor cursor;
-        String[] fields =  {ContactListContract.ContactEntry.COLUMN_NAME, ContactListContract.ContactEntry.COLUMN_NUMBER};
+        String[] fields =  {ContactListContract.ContactEntry._ID, ContactListContract.ContactEntry.COLUMN_NAME, ContactListContract.ContactEntry.COLUMN_NUMBER};
 
-        db = dbHelper.getReadableDatabase();
+        db = dbHelper.getWritableDatabase();
 
         cursor = db.query(ContactListContract.ContactEntry.TABLE_NAME, fields, null, null, null, null, null, null);
 
@@ -63,14 +63,18 @@ public class ContactListController {
             cursor.moveToFirst();
 
             while (!cursor.isAfterLast()) {
-                Contact contact = new Contact(
-                        cursor.getString(cursor.getColumnIndex(ContactListContract.ContactEntry.COLUMN_NAME)),
-                        cursor.getString(cursor.getColumnIndex(ContactListContract.ContactEntry.COLUMN_NUMBER))
-                );
+                try {
+                    Contact contact = new Contact(
+                            cursor.getString(cursor.getColumnIndex(ContactListContract.ContactEntry.COLUMN_NAME)),
+                            cursor.getString(cursor.getColumnIndex(ContactListContract.ContactEntry.COLUMN_NUMBER))
+                    );
 
-                contact.setId(cursor.getLong(cursor.getColumnIndex(ContactListContract.ContactEntry._ID)));
+                    contact.setId(cursor.getLong(cursor.getColumnIndex(ContactListContract.ContactEntry._ID)));
 
-                contactList.add(contact);
+                    contactList.add(contact);
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
                 cursor.moveToNext();
             }
 
@@ -101,7 +105,7 @@ public class ContactListController {
         contentValues.put(ContactListContract.ContactEntry.COLUMN_NAME, contact.getName());
         contentValues.put(ContactListContract.ContactEntry.COLUMN_NUMBER, contact.getNumber());
 
-        db.update(ContactListContract.ContactEntry.TABLE_NAME, contentValues, ContactListContract.ContactEntry._ID + contact.getId(), null);
+        db.update(ContactListContract.ContactEntry.TABLE_NAME, contentValues, ContactListContract.ContactEntry._ID + "=" + contact.getId(), null);
         db.close();
 
         return true;
@@ -113,7 +117,16 @@ public class ContactListController {
      * @return Estado da remoção.
      */
     public boolean delete(Contact contact) {
-        if(contact.getId() == -1) {
+        return delete(contact.getId());
+    }
+
+    /**
+     * Remove um contato do banco de dados a partir da id.
+     * @param id Id do contato.
+     * @return Resultado da operação.
+     */
+    public boolean delete(long id) {
+        if(id == -1) {
             System.out.println("Invalid contact id.");
             return false;
         }
@@ -122,7 +135,7 @@ public class ContactListController {
 
         int result = db.delete(
                 ContactListContract.ContactEntry.TABLE_NAME,
-                ContactListContract.ContactEntry._ID + "=" + contact.getId(),
+                ContactListContract.ContactEntry._ID + "=" + id,
                 null
         );
 

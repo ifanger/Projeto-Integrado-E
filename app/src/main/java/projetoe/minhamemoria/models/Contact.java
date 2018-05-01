@@ -5,16 +5,10 @@ public class Contact {
     private String name;
     private String number;
 
-    public Contact(String name, String number) {
-        try {
-            setId(-1);
-            setName(name);
-            setNumber(number);
-        } catch(Exception e) {
-            e.printStackTrace();
-            this.name = "Contato desconhecido";
-            this.number = "0000-0000";
-        }
+    public Contact(String name, String number) throws Exception {
+        setId(-1);
+        setName(name);
+        setNumber(number);
     }
 
     public long getId() {

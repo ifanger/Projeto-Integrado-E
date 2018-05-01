@@ -13,12 +13,12 @@ public class ContactListHelper extends SQLiteOpenHelper {
     /**
      * Versão do banco de dados
      */
-    public static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 1;
 
     /**
      * Nome do arquivo do banco de dados
      */
-    public static final String DATABASE_NAME = "ContactList.db";
+    private static final String DATABASE_NAME = "ContactList.db";
 
     /**
      * String para criação do banco de dados.
