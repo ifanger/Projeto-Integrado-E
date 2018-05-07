@@ -7,14 +7,15 @@ import android.database.sqlite.SQLiteOpenHelper;
 import projetoe.minhamemoria.db.contracts.ListItemContract;
 
 public class ListItemHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private static final String DATABASE_NAME = "ListItems.db";
 
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + ListItemContract.ListItemEntry.TABLE_NAME + " (" +
                     ListItemContract.ListItemEntry._ID + " INTEGER PRIMARY KEY," +
-                    ListItemContract.ListItemEntry.COLUMN_LISTA + " LONG," +
+                    ListItemContract.ListItemEntry.COLUMN_LIST + " LONG, " +
+                    ListItemContract.ListItemEntry.COLUMN_CHECK + " INT, " +
                     ListItemContract.ListItemEntry.COLUMN_NAME + " TEXT)";
 
     private static final String SQL_DELETE_ENTRIES =

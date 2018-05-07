@@ -4,10 +4,12 @@ public class ListItem {
     private long id;
     private long listId;
     private String title;
+    private boolean checked;
 
     public ListItem(long listId, String title) throws Exception {
         setListId(listId);
         setTitle(title);
+        setChecked(0);
         this.id = -1;
     }
 
@@ -40,6 +42,10 @@ public class ListItem {
 
         this.title = title;
     }
+
+    public int isChecked() { return (checked)? 1 : 0; }
+
+    public void setChecked(int checked) { this.checked = checked == 1; }
 
     @Override
     public boolean equals(Object o) {

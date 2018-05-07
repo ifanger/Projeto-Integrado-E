@@ -15,18 +15,21 @@ import java.util.List;
 
 import projetoe.minhamemoria.R;
 import projetoe.minhamemoria.controllers.ContactListController;
+import projetoe.minhamemoria.controllers.ListController;
+import projetoe.minhamemoria.controllers.ListItemController;
 import projetoe.minhamemoria.models.Contact;
+import projetoe.minhamemoria.models.ListItem;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity Debug";
-    private ContactListController contactListController;
+    private ListItemController controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        contactListController = new ContactListController(this);
+        controller = new ListItemController(this);
     }
 
     public void onClick(View view) {
@@ -36,11 +39,10 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         linearLayout.setLayoutParams(layoutParams);
 
-        final EditText textNome = new EditText(this);
-        final EditText textTelefone = new EditText(this);
+        final EditText textTitulo = new EditText(this);
+        textTitulo.setText("Titulo");
 
-        linearLayout.addView(textNome);
-        linearLayout.addView(textTelefone);
+        linearLayout.addView(textTitulo);
 
         AlertDialog alertDialog = new AlertDialog.Builder(this)
                 .setTitle("new entity")
@@ -49,8 +51,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         try {
-                            Contact contact = new Contact(textNome.getText().toString(), textTelefone.getText().toString());
-                            contactListController.addContact(contact);
+                            ListItem contact = new ListItem(textTitulo.getText().toString());
+                            controller.insert(contact);
                         } catch (Exception e) {
                             e.printStackTrace();
                             Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
@@ -63,18 +65,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onSelectClick(View view) {
-        List<Contact> contactList = contactListController.getContactList();
+        List<projetoe.minhamemoria.models.List> contactList = controller.getLists();
 
         StringBuilder contactListstr = new StringBuilder();
 
-        for (Contact c: contactList) {
+        for (projetoe.minhamemoria.models.List c: contactList) {
             contactListstr.append(c.getId()).append(" - ");
-            contactListstr.append(c.getName()).append(" ");
-            contactListstr.append(c.getNumber()).append("\n");
+            contactListstr.append(c.getTitle()).append("\n");
         }
 
         AlertDialog alertDialog = new AlertDialog.Builder(this)
-                .setTitle("contact list")
+                .setTitle("lists")
                 .setMessage(contactListstr.toString())
                 .setPositiveButton("ok", null)
                 .create();
@@ -89,23 +90,24 @@ public class MainActivity extends AppCompatActivity {
         linearLayout.setLayoutParams(layoutParams);
 
         final EditText textId = new EditText(this);
-        final EditText textNome = new EditText(this);
-        final EditText textTelefone = new EditText(this);
+        textId.setText("id");
+
+        final EditText textTitulo = new EditText(this);
+        textTitulo.setText("titulo");
 
         linearLayout.addView(textId);
-        linearLayout.addView(textNome);
-        linearLayout.addView(textTelefone);
+        linearLayout.addView(textTitulo);
 
         AlertDialog alertDialog = new AlertDialog.Builder(this)
-                .setTitle("new entity")
+                .setTitle("update entity")
                 .setView(linearLayout)
-                .setPositiveButton("create", new DialogInterface.OnClickListener() {
+                .setPositiveButton("update", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         try {
-                            Contact contact = new Contact(textNome.getText().toString(), textTelefone.getText().toString());
+                            projetoe.minhamemoria.models.List contact = new projetoe.minhamemoria.models.List(textTitulo.getText().toString());
                             contact.setId(Long.parseLong(textId.getText().toString()));
-                            boolean result = contactListController.update(contact);
+                            boolean result = controller.update(contact);
                             if(result)
                                 Toast.makeText(MainActivity.this, "Atualizado com sucesso!", Toast.LENGTH_LONG).show();
                             else
@@ -133,13 +135,13 @@ public class MainActivity extends AppCompatActivity {
         linearLayout.addView(textId);
 
         AlertDialog alertDialog = new AlertDialog.Builder(this)
-                .setTitle("new entity")
+                .setTitle("delete entity")
                 .setView(linearLayout)
-                .setPositiveButton("create", new DialogInterface.OnClickListener() {
+                .setPositiveButton("delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         try {
-                            boolean result = contactListController.delete(Long.parseLong(textId.getText().toString()));
+                            boolean result = controller.delete(Long.parseLong(textId.getText().toString()));
                             if(result)
                                 Toast.makeText(MainActivity.this, "Deletado com sucesso!", Toast.LENGTH_LONG).show();
                             else

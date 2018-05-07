@@ -27,8 +27,9 @@ public class ListItemController {
         db = dbHelper.getWritableDatabase();
 
         values = new ContentValues();
-        values.put(ListItemContract.ListItemEntry.COLUMN_LISTA, listItem.getListId());
+        values.put(ListItemContract.ListItemEntry.COLUMN_LIST, listItem.getListId());
         values.put(ListItemContract.ListItemEntry.COLUMN_NAME, listItem.getTitle());
+        values.put(ListItemContract.ListItemEntry.COLUMN_CHECK, listItem.isChecked());
 
         result = db.insert(ListItemContract.ListItemEntry.TABLE_NAME, null, values);
         db.close();
@@ -40,11 +41,11 @@ public class ListItemController {
         List<ListItem> items = new ArrayList<>();
 
         Cursor cursor;
-        String[] fields =  {ListItemContract.ListItemEntry._ID, ListItemContract.ListItemEntry.COLUMN_NAME, ListItemContract.ListItemEntry.COLUMN_LISTA};
+        String[] fields =  {ListItemContract.ListItemEntry._ID, ListItemContract.ListItemEntry.COLUMN_NAME, ListItemContract.ListItemEntry.COLUMN_LIST, ListItemContract.ListItemEntry.COLUMN_CHECK};
 
         db = dbHelper.getWritableDatabase();
 
-        cursor = db.query(ListItemContract.ListItemEntry.TABLE_NAME, fields, ListItemContract.ListItemEntry.COLUMN_LISTA + "=?", new String[]{listId+""}, null, null, null, null);
+        cursor = db.query(ListItemContract.ListItemEntry.TABLE_NAME, fields, ListItemContract.ListItemEntry.COLUMN_LIST + "=?", new String[]{listId+""}, null, null, null, null);
 
         if(cursor != null) {
             cursor.moveToFirst();
@@ -52,11 +53,12 @@ public class ListItemController {
             while (!cursor.isAfterLast()) {
                 try {
                     ListItem listItem = new ListItem(
-                            cursor.getLong(cursor.getColumnIndex(ListItemContract.ListItemEntry.COLUMN_LISTA)),
+                            cursor.getLong(cursor.getColumnIndex(ListItemContract.ListItemEntry.COLUMN_LIST)),
                             cursor.getString(cursor.getColumnIndex(ListItemContract.ListItemEntry.COLUMN_NAME))
                     );
 
                     listItem.setId(cursor.getLong(cursor.getColumnIndex(ListItemContract.ListItemEntry._ID)));
+                    listItem.setChecked(cursor.getInt(cursor.getColumnIndex(ListItemContract.ListItemEntry.COLUMN_CHECK)));
 
                     items.add(listItem);
                 } catch(Exception e) {
@@ -85,6 +87,7 @@ public class ListItemController {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(ListItemContract.ListItemEntry.COLUMN_NAME, listItem.getTitle());
+        contentValues.put(ListItemContract.ListItemEntry.COLUMN_CHECK, listItem.isChecked());
 
         db.update(ListItemContract.ListItemEntry.TABLE_NAME, contentValues, ListItemContract.ListItemEntry._ID + "=" + listItem.getId(), null);
         db.close();
@@ -126,7 +129,8 @@ public class ListItemController {
         if(cursor.getCount() > 0) {
             cursor.moveToFirst();
             list.setTitle(cursor.getString(cursor.getColumnIndex(ListItemContract.ListItemEntry.COLUMN_NAME)));
-            list.setListId(cursor.getLong(cursor.getColumnIndex(ListItemContract.ListItemEntry.COLUMN_LISTA)));
+            list.setListId(cursor.getLong(cursor.getColumnIndex(ListItemContract.ListItemEntry.COLUMN_LIST)));
+            list.setChecked(cursor.getInt(cursor.getColumnIndex(ListItemContract.ListItemEntry.COLUMN_CHECK)));
         }
 
         cursor.close();
