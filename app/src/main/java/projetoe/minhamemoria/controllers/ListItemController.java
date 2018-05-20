@@ -131,6 +131,7 @@ public class ListItemController {
             list.setTitle(cursor.getString(cursor.getColumnIndex(ListItemContract.ListItemEntry.COLUMN_NAME)));
             list.setListId(cursor.getLong(cursor.getColumnIndex(ListItemContract.ListItemEntry.COLUMN_LIST)));
             list.setChecked(cursor.getInt(cursor.getColumnIndex(ListItemContract.ListItemEntry.COLUMN_CHECK)));
+            list.setId(cursor.getLong(cursor.getColumnIndex(ListItemContract.ListItemEntry._ID)));
         }
 
         cursor.close();

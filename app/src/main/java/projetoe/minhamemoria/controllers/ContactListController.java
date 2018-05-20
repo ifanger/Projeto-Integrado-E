@@ -163,6 +163,7 @@ public class ContactListController {
 
             contact.setName(cursor.getString(cursor.getColumnIndex(ContactListContract.ContactEntry.COLUMN_NAME)));
             contact.setNumber(cursor.getString(cursor.getColumnIndex(ContactListContract.ContactEntry.COLUMN_NUMBER)));
+            contact.setId(cursor.getLong(cursor.getColumnIndex(ContactListContract.ContactEntry._ID)));
         }
 
         cursor.close();

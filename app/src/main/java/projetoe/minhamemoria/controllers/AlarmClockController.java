@@ -28,7 +28,7 @@ public class AlarmClockController {
 
         values = new ContentValues();
         values.put(AlarmClockContract.AlarmClockEntry.COLUMN_NAME, alarmClock.getName());
-        values.put(AlarmClockContract.AlarmClockEntry.COLUMN_TIME, alarmClock.getStrTime());
+        values.put(AlarmClockContract.AlarmClockEntry.COLUMN_TIME, alarmClock.getTime());
         values.put(AlarmClockContract.AlarmClockEntry.COLUMN_REPEAT, (alarmClock.isRepeat()) ? 1 : 0);
 
         result = db.insert(AlarmClockContract.AlarmClockEntry.TABLE_NAME, null, values);
@@ -37,7 +37,7 @@ public class AlarmClockController {
         return result;
     }
 
-    public List<AlarmClock> getLists() {
+    public List<AlarmClock> getAlarms() {
         List<AlarmClock> alarms = new ArrayList<>();
 
         Cursor cursor;
@@ -54,12 +54,11 @@ public class AlarmClockController {
                 try {
                     AlarmClock alarmClock = new AlarmClock(
                             cursor.getString(cursor.getColumnIndex(AlarmClockContract.AlarmClockEntry.COLUMN_NAME)),
-                            cursor.getInt(cursor.getColumnIndex(AlarmClockContract.AlarmClockEntry.COLUMN_REPEAT)),
+                            cursor.getInt(cursor.getColumnIndex(AlarmClockContract.AlarmClockEntry.COLUMN_REPEAT)) == 1,
                             cursor.getString(cursor.getColumnIndex(AlarmClockContract.AlarmClockEntry.COLUMN_TIME))
                     );
 
                     alarmClock.setId(cursor.getLong(cursor.getColumnIndex(AlarmClockContract.AlarmClockEntry._ID)));
-
                     alarms.add(alarmClock);
                 } catch(Exception e) {
                     e.printStackTrace();
@@ -74,41 +73,43 @@ public class AlarmClockController {
 
         db.close();
 
-        return lists;
+        return alarms;
     }
 
-    public boolean update(List list) {
-        if(list.getId() == -1) {
-            System.out.println("Invalid list id.");
+    public boolean update(AlarmClock alarmClock) {
+        if(alarmClock.getId() == -1) {
+            System.out.println("Invalid alarm id.");
             return false;
         }
 
         db = dbHelper.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put(ListContract.ListEntry.COLUMN_NAME, list.getTitle());
+        contentValues.put(AlarmClockContract.AlarmClockEntry.COLUMN_NAME, alarmClock.getName());
+        contentValues.put(AlarmClockContract.AlarmClockEntry.COLUMN_REPEAT, alarmClock.isRepeat() ? 1 : 0);
+        contentValues.put(AlarmClockContract.AlarmClockEntry.COLUMN_TIME, alarmClock.getTime());
 
-        db.update(ListContract.ListEntry.TABLE_NAME, contentValues, ListContract.ListEntry._ID + "=" + list.getId(), null);
+        db.update(AlarmClockContract.AlarmClockEntry.TABLE_NAME, contentValues, AlarmClockContract.AlarmClockEntry._ID + "=" + alarmClock.getId(), null);
         db.close();
 
         return true;
     }
 
-    public boolean delete(List list) {
-        return delete(list.getId());
+    public boolean delete(AlarmClock alarmClock) {
+        return delete(alarmClock.getId());
     }
 
     public boolean delete(long id) {
         if(id == -1) {
-            System.out.println("Invalid list id.");
+            System.out.println("Invalid alarm id.");
             return false;
         }
 
         db = dbHelper.getWritableDatabase();
 
         int result = db.delete(
-                ListContract.ListEntry.TABLE_NAME,
-                ListContract.ListEntry._ID + "=" + id,
+                AlarmClockContract.AlarmClockEntry.TABLE_NAME,
+                AlarmClockContract.AlarmClockEntry._ID + "=" + id,
                 null
         );
 
@@ -117,22 +118,26 @@ public class AlarmClockController {
         return result > 0;
     }
 
-    public List get(long id) throws Exception {
-        List list = new List("Lista com Erro");
+    public AlarmClock get(long id) throws Exception {
+        AlarmClock alarmClock = new AlarmClock("Alarme Desconhecido", false, "00:00");
+
         Cursor cursor;
-
         db = dbHelper.getReadableDatabase();
-
-        cursor = db.rawQuery("SELECT * FROM " + ListContract.ListEntry.TABLE_NAME + " WHERE id=" + id, null);
+        cursor = db.rawQuery("SELECT * FROM " + AlarmClockContract.AlarmClockEntry.TABLE_NAME + " WHERE id=" + id, null);
 
         if(cursor.getCount() > 0) {
             cursor.moveToFirst();
-            list.setTitle(cursor.getString(cursor.getColumnIndex(ListContract.ListEntry.COLUMN_NAME)));
+            alarmClock.setName(cursor.getString(cursor.getColumnIndex(AlarmClockContract.AlarmClockEntry.COLUMN_NAME)));
+            alarmClock.setId(cursor.getLong(cursor.getColumnIndex(AlarmClockContract.AlarmClockEntry._ID)));
+            alarmClock.setRepeat(
+                    (cursor.getInt(cursor.getColumnIndex(AlarmClockContract.AlarmClockEntry.COLUMN_REPEAT)) == 1)
+            );
+            alarmClock.setTime(cursor.getString(cursor.getColumnIndex(AlarmClockContract.AlarmClockEntry.COLUMN_TIME)));
         }
 
         cursor.close();
         db.close();
 
-        return list;
+        return alarmClock;
     }
 }

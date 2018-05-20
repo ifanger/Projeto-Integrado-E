@@ -123,6 +123,7 @@ public class ListController {
         if(cursor.getCount() > 0) {
             cursor.moveToFirst();
             list.setTitle(cursor.getString(cursor.getColumnIndex(ListContract.ListEntry.COLUMN_NAME)));
+            list.setId(cursor.getLong(cursor.getColumnIndex(ListContract.ListEntry._ID)));
         }
 
         cursor.close();
