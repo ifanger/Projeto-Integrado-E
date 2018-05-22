@@ -37,7 +37,7 @@ public class CalendarItemController {
         return result;
     }
 
-    public List<CalendarItem> getAlarms() {
+    public List<CalendarItem> getAlarms() throws CalendarItem.TimeException, CalendarItem.DateException, CalendarItem.NameException {
         List<CalendarItem> calendars = new ArrayList<>();
 
         Cursor cursor;
@@ -51,18 +51,14 @@ public class CalendarItemController {
             cursor.moveToFirst();
 
             while (!cursor.isAfterLast()) {
-                try {
-                    CalendarItem calendarItem = new CalendarItem(
-                            cursor.getString(cursor.getColumnIndex(CalendarItemContract.CalendarItemEntry.COLUMN_NAME)),
-                            cursor.getString(cursor.getColumnIndex(CalendarItemContract.CalendarItemEntry.COLUMN_DATE)),
-                            cursor.getString(cursor.getColumnIndex(CalendarItemContract.CalendarItemEntry.COLUMN_TIME)),
-                    );
+                CalendarItem calendarItem = new CalendarItem(
+                        cursor.getString(cursor.getColumnIndex(CalendarItemContract.CalendarItemEntry.COLUMN_NAME)),
+                        cursor.getString(cursor.getColumnIndex(CalendarItemContract.CalendarItemEntry.COLUMN_DATE)),
+                        cursor.getString(cursor.getColumnIndex(CalendarItemContract.CalendarItemEntry.COLUMN_TIME))
+                );
 
-                    calendarItem.setId(cursor.getLong(cursor.getColumnIndex(CalendarItemContract.CalendarItemEntry._ID)));
-                    calendars.add(calendarItem);
-                } catch(Exception e) {
-                    e.printStackTrace();
-                }
+                calendarItem.setId(cursor.getLong(cursor.getColumnIndex(CalendarItemContract.CalendarItemEntry._ID)));
+                calendars.add(calendarItem);
                 cursor.moveToNext();
             }
 
@@ -118,7 +114,7 @@ public class CalendarItemController {
         return result > 0;
     }
 
-    public CalendarItem get(long id) throws Exception {
+    public CalendarItem get(long id) throws CalendarItem.TimeException, CalendarItem.DateException, CalendarItem.NameException {
         CalendarItem calendarItem = new CalendarItem("Calendário Desconhecido", "0000-00-00", "00:00");
 
         Cursor cursor;
@@ -127,8 +123,8 @@ public class CalendarItemController {
 
         if(cursor.getCount() > 0) {
             cursor.moveToFirst();
-            calendarItem.setName(cursor.getString(cursor.getColumnIndex(CalendarItemContract.CalendarItemEntry.COLUMN_NAME)));
             calendarItem.setId(cursor.getLong(cursor.getColumnIndex(CalendarItemContract.CalendarItemEntry._ID)));
+            calendarItem.setName(cursor.getString(cursor.getColumnIndex(CalendarItemContract.CalendarItemEntry.COLUMN_NAME)));
             calendarItem.setDate(cursor.getString(cursor.getColumnIndex(CalendarItemContract.CalendarItemEntry.COLUMN_DATE)));
             calendarItem.setTime(cursor.getString(cursor.getColumnIndex(CalendarItemContract.CalendarItemEntry.COLUMN_TIME)));
         }
