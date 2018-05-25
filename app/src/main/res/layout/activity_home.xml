@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#eeeeee"
+    android:orientation="vertical"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    tools:context=".home">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:weightSum="2">
+
+        <ImageButton
+            android:id="@+id/button_phone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="@drawable/icon_shadow"
+            android:cropToPadding="false"
+            android:elevation="30px"
+            android:padding="30dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icon_phone"
+            app:layout_constraintBottom_toTopOf="@+id/button_checklist"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.491"
+            tools:layout_editor_absoluteX="28dp" />
+
+        <ImageButton
+            android:id="@+id/button_settings"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="@drawable/icon_shadow"
+            android:elevation="30px"
+            android:padding="30dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icon_settings"
+            app:layout_constraintBottom_toTopOf="@+id/button_pills"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.381"
+            tools:layout_editor_absoluteX="224dp" />
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:weightSum="2">
+
+        <ImageButton
+            android:id="@+id/button_checklist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="@drawable/icon_shadow"
+            android:elevation="30px"
+            android:padding="30dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icon_checklist"
+            tools:layout_editor_absoluteX="28dp"
+            tools:layout_editor_absoluteY="244dp" />
+
+        <ImageButton
+            android:id="@+id/button_pills"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="@drawable/icon_shadow"
+            android:elevation="30px"
+            android:padding="30dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icon_pills"
+            tools:layout_editor_absoluteX="224dp"
+            tools:layout_editor_absoluteY="244dp" />
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:weightSum="2">
+
+        <ImageButton
+            android:id="@+id/button_ring"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="@drawable/icon_shadow"
+            android:elevation="30px"
+            android:padding="30dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icon_ring"
+            app:layout_constraintBottom_toTopOf="@+id/button_sos"
+            app:layout_constraintTop_toBottomOf="@+id/button_checklist"
+            tools:layout_editor_absoluteX="28dp" />
+
+
+        <ImageButton
+            android:id="@+id/button_none"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="@drawable/icon_shadow"
+            android:elevation="30px"
+            android:padding="30dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icon_calendar"
+            app:layout_constraintBottom_toTopOf="@+id/button_sos"
+            app:layout_constraintTop_toBottomOf="@+id/button_pills"
+            tools:layout_editor_absoluteX="224dp" />
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:weightSum="1">
+
+        <Button
+            android:id="@+id/button_sos"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="@drawable/icon_shadow_sos"
+            android:elevation="30px"
+            android:scaleType="fitCenter"
+            android:text="SOS"
+            android:textColor="@color/colorWhite"
+            android:textIsSelectable="false"
+            android:textSize="60px"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</LinearLayout>
