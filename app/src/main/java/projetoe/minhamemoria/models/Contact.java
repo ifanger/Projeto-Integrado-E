@@ -50,7 +50,25 @@ public class Contact {
         if(number.length() > 25)
             throw new Exception("O número do contato não pode ser maior do que 25 caracteres.");
 
+        if(getLongNumber(number) == 0)
+            throw new Exception("O número do telefone é inválido. Tente, por exemplo: (19) 3839-8492");
+
         this.number = number;
+    }
+
+    public long getLongNumber(String number) {
+        try {
+            return Long.parseLong(((number == null) ? this.number : number)
+                    .replace("(", "")
+                    .replace(")", "")
+                    .replace("+", "")
+                    .replace("-", "")
+                    .replace(" ", "")
+                    .trim()
+            );
+        } catch(NumberFormatException e) {
+            return 0;
+        }
     }
 
     @Override

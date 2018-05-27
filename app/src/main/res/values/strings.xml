@@ -1,3 +1,20 @@
 <resources>
-    <string name="app_name">Minha Memoria</string>
+    <string name="app_name">My Memory</string>
+    <string name="btn_sos">SOS</string>
+    <string name="str_contact_list">Contact List</string>
+    <string name="str_error_phone_number">Failed to get phone number</string>
+    <string name="str_error_contact_name">Failed to get contact name</string>
+    <string name="str_new_contact">New contact</string>
+    <string name="str_add_contact">Add contact</string>
+    <string name="str_cancel">Cancel</string>
+    <string name="str_person_name">Person name</string>
+    <string name="str_person_number">Person number</string>
+    <string name="str_delete_confirm">Remove</string>
+    <string name="str_delete_confirm_message" formatted="false">Do you really want to remove %s from your contact list?</string>
+    <string name="str_yes">Yes</string>
+    <string name="str_no">No</string>
+    <string name="str_permission_needed">I need your permission</string>
+    <string name="str_permission_call">Click \"I agree\" and then give me the permission for making calls.</string>
+    <string name="str_agree">I agree</string>
+    <string name="str_permission_call_refused">Please, we really need your permission for making calls!</string>
 </resources>
