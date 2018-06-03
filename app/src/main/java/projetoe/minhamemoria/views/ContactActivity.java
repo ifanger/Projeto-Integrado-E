@@ -140,24 +140,6 @@ public class ContactActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case AppUtils.CALL_PERMISSION_REQ_CODE:
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    String numberToCall = AppUtils.getPref(this, AppUtils.PREF_CONTACT_CALL_BEFORE_REQUEST).trim();
-                    if(!numberToCall.isEmpty()) {
-                        try {
-                            AppUtils.callContact(this, new Contact("tmp", numberToCall));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                } else
-                    Toast.makeText(this, getString(R.string.str_permission_call_refused), Toast.LENGTH_LONG).show();
-
-                break;
-            default:
-                break;
-        }
+        AppUtils.requestPermissionHandler(this, requestCode, permissions, grantResults);
     }
 }

@@ -18,10 +18,16 @@
     <string name="str_agree">Eu autorizo</string>
     <string name="str_permission_call_refused">Não será possível realizar chamadas até que a permissão seja concedida!</string>
     <string name="str_list_title">Título da Lista</string>
-    <string name="str_list_lists">Listas</string>
+    <string name="str_list_lists">Lista de Tarefas</string>
     <string name="str_new_list">Nova lista</string>
     <string name="str_add">Adicionar</string>
     <string name="str_edit_list">Editar lista</string>
     <string name="str_change">Alterar</string>
     <string name="str_new_item">Novo item</string>
+    <string name="str_sos_button">Botão SOS</string>
+    <string name="str_police">Polícia (190)</string>
+    <string name="str_ems">Emergência (192)</string>
+    <string name="str_firedp">Bombeiros (193)</string>
+    <string name="str_report">Disque-Denúncia (181)</string>
+    <string name="str_sos_key">pref_sos</string>
 </resources>

@@ -10,7 +10,9 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.widget.Toast;
 
 import projetoe.minhamemoria.R;
 
@@ -41,34 +43,71 @@ public class AppUtils {
         editor.apply();
     }
 
-    public static String getPref(Context context, String key) {
+    public static String getPref(Context context, String key, String defaultV) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getString(key, "");
+        return prefs.getString(key, defaultV);
+    }
+
+    public static void requestPermissionHandler(Activity activity, int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case AppUtils.CALL_PERMISSION_REQ_CODE:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    String numberToCall = AppUtils.getPref(activity, AppUtils.PREF_CONTACT_CALL_BEFORE_REQUEST, "").trim();
+                    if(!numberToCall.isEmpty()) {
+                        try {
+                            AppUtils.callContact(activity, new Contact("tmp", numberToCall));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } else
+                    Toast.makeText(activity, activity.getString(R.string.str_permission_call_refused), Toast.LENGTH_LONG).show();
+                break;
+            default:
+                break;
+        }
     }
 
     public static void callContact(final Activity activity, final Contact contact) {
         Intent callIntent = new Intent(Intent.ACTION_CALL);
-        callIntent.setData(Uri.parse("tel:" + contact.getLongNumber(null)));
+        callIntent.setData(Uri.parse("tel:" + contact.getNumber()));
 
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            final AlertDialog alertDialog = new AlertDialog.Builder(activity)
-                    .setTitle(R.string.str_permission_needed)
-                    .setMessage(R.string.str_permission_call)
-                    .setPositiveButton(R.string.str_agree, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            ActivityCompat
-                                    .requestPermissions(activity, new String[] { Manifest.permission.CALL_PHONE }, AppUtils.CALL_PERMISSION_REQ_CODE);
-
-                            setPref(activity, PREF_CONTACT_CALL_BEFORE_REQUEST, contact.getNumber());
-                        }
-                    })
-                    .setNegativeButton(R.string.str_cancel, null)
-                    .create();
-            alertDialog.show();
+            requestPermissionToCall(activity, contact.getNumber());
             return;
         }
 
         activity.startActivity(callIntent);
+    }
+
+    public static void callNumber(final Activity activity, final String number) {
+        Intent callIntent = new Intent(Intent.ACTION_CALL);
+        callIntent.setData(Uri.parse("tel:" + number));
+
+        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissionToCall(activity, number);
+            return;
+        }
+
+        activity.startActivity(callIntent);
+    }
+
+    private static void requestPermissionToCall(final Activity activity, final String number) {
+        final AlertDialog alertDialog = new AlertDialog.Builder(activity)
+                .setTitle(R.string.str_permission_needed)
+                .setMessage(R.string.str_permission_call)
+                .setPositiveButton(R.string.str_agree, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        ActivityCompat
+                                .requestPermissions(activity, new String[] { Manifest.permission.CALL_PHONE }, AppUtils.CALL_PERMISSION_REQ_CODE);
+
+                        setPref(activity, PREF_CONTACT_CALL_BEFORE_REQUEST, number);
+                    }
+                })
+                .setNegativeButton(R.string.str_cancel, null)
+                .create();
+        alertDialog.show();
     }
 }

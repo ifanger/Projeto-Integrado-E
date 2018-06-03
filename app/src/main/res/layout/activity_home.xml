@@ -42,19 +42,20 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="8dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             android:layout_weight="1"
             android:adjustViewBounds="true"
             android:background="@drawable/icon_shadow"
             android:elevation="3dp"
+            android:onClick="onSettingsClick"
             android:padding="30dp"
             android:scaleType="fitCenter"
             android:src="@drawable/icon_settings"
             app:layout_constraintBottom_toTopOf="@+id/button_pills"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.381"
-            tools:layout_editor_absoluteX="224dp"
-            android:layout_marginLeft="16dp" />
+            tools:layout_editor_absoluteX="224dp" />
 
     </LinearLayout>
 
@@ -133,18 +134,19 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="8dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             android:layout_weight="1"
             android:adjustViewBounds="true"
             android:background="@drawable/icon_shadow"
             android:elevation="3dp"
+            android:onClick="onCalendarClick"
             android:padding="30dp"
             android:scaleType="fitCenter"
             android:src="@drawable/icon_calendar"
             app:layout_constraintBottom_toTopOf="@+id/button_sos"
             app:layout_constraintTop_toBottomOf="@+id/button_pills"
-            tools:layout_editor_absoluteX="224dp"
-            android:layout_marginLeft="16dp" />
+            tools:layout_editor_absoluteX="224dp" />
 
     </LinearLayout>
 
@@ -162,6 +164,7 @@
             android:adjustViewBounds="true"
             android:background="@drawable/icon_shadow_sos"
             android:elevation="3dp"
+            android:onClick="onSOSClick"
             android:text="@string/btn_sos"
             android:textColor="@color/colorWhite"
             android:textIsSelectable="false"
