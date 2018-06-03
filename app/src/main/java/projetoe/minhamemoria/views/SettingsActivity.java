@@ -38,6 +38,7 @@ public class SettingsActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         AppUtils.setPref(SettingsActivity.this,  getString(R.string.str_sos_key), arrayAdapter.getItem(which));
+                        btnSOSConfig.setText(arrayAdapter.getItem(which));
                     }
                 });
                 builderSingle.show();
