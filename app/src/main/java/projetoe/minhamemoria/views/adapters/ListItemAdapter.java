@@ -78,7 +78,6 @@ public class ListItemAdapter extends RecyclerView.Adapter {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 item.setChecked(contactViewHolder.checkBox.isChecked());
                 controller.update(item);
-                notifyDataSetChanged();
             }
         });
 
