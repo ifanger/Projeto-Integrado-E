@@ -118,7 +118,7 @@ public class ListController {
 
         db = dbHelper.getReadableDatabase();
 
-        cursor = db.rawQuery("SELECT * FROM " + ListContract.ListEntry.TABLE_NAME + " WHERE id=" + id, null);
+        cursor = db.rawQuery("SELECT * FROM " + ListContract.ListEntry.TABLE_NAME + " WHERE _id=" + id, null);
 
         if(cursor.getCount() > 0) {
             cursor.moveToFirst();

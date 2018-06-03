@@ -123,7 +123,7 @@ public class AlarmClockController {
 
         Cursor cursor;
         db = dbHelper.getReadableDatabase();
-        cursor = db.rawQuery("SELECT * FROM " + AlarmClockContract.AlarmClockEntry.TABLE_NAME + " WHERE id=" + id, null);
+        cursor = db.rawQuery("SELECT * FROM " + AlarmClockContract.AlarmClockEntry.TABLE_NAME + " WHERE _id=" + id, null);
 
         if(cursor.getCount() > 0) {
             cursor.moveToFirst();

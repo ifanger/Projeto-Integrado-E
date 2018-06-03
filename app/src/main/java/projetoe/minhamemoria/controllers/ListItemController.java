@@ -58,7 +58,7 @@ public class ListItemController {
                     );
 
                     listItem.setId(cursor.getLong(cursor.getColumnIndex(ListItemContract.ListItemEntry._ID)));
-                    listItem.setChecked(cursor.getInt(cursor.getColumnIndex(ListItemContract.ListItemEntry.COLUMN_CHECK)));
+                    listItem.setChecked(cursor.getInt(cursor.getColumnIndex(ListItemContract.ListItemEntry.COLUMN_CHECK)) == 1);
 
                     items.add(listItem);
                 } catch(Exception e) {
@@ -124,13 +124,13 @@ public class ListItemController {
 
         db = dbHelper.getReadableDatabase();
 
-        cursor = db.rawQuery("SELECT * FROM " + ListItemContract.ListItemEntry.TABLE_NAME + " WHERE id=" + id, null);
+        cursor = db.rawQuery("SELECT * FROM " + ListItemContract.ListItemEntry.TABLE_NAME + " WHERE _id=" + id, null);
 
         if(cursor.getCount() > 0) {
             cursor.moveToFirst();
             list.setTitle(cursor.getString(cursor.getColumnIndex(ListItemContract.ListItemEntry.COLUMN_NAME)));
             list.setListId(cursor.getLong(cursor.getColumnIndex(ListItemContract.ListItemEntry.COLUMN_LIST)));
-            list.setChecked(cursor.getInt(cursor.getColumnIndex(ListItemContract.ListItemEntry.COLUMN_CHECK)));
+            list.setChecked(cursor.getInt(cursor.getColumnIndex(ListItemContract.ListItemEntry.COLUMN_CHECK)) == 1);
             list.setId(cursor.getLong(cursor.getColumnIndex(ListItemContract.ListItemEntry._ID)));
         }
 

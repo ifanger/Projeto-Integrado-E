@@ -119,7 +119,7 @@ public class CalendarItemController {
 
         Cursor cursor;
         db = dbHelper.getReadableDatabase();
-        cursor = db.rawQuery("SELECT * FROM " + CalendarItemContract.CalendarItemEntry.TABLE_NAME + " WHERE id=" + id, null);
+        cursor = db.rawQuery("SELECT * FROM " + CalendarItemContract.CalendarItemEntry.TABLE_NAME + " WHERE _id=" + id, null);
 
         if(cursor.getCount() > 0) {
             cursor.moveToFirst();

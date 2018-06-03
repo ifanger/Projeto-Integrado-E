@@ -11,19 +11,35 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".views.MainActivity"></activity>
-        <activity android:name=".DebugActivity"></activity>
-        <activity android:name=".views.HomeActivity" android:theme="@style/HomeTheme">
+        <activity android:name=".views.MainActivity" />
+        <activity android:name=".DebugActivity" />
+        <activity
+            android:name=".views.HomeActivity"
+            android:theme="@style/HomeTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".views.ContactActivity" android:parentActivityName=".views.HomeActivity">
+        <activity
+            android:name=".views.ContactActivity"
+            android:parentActivityName=".views.HomeActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".views.HomeActivity" />
+        </activity>
+        <activity
+            android:name=".views.ListActivity"
+            android:parentActivityName=".views.HomeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".views.HomeActivity" />
+        </activity>
+        <activity android:name=".views.ListItemActivity" android:parentActivityName=".views.ListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".views.ListActivity" />
         </activity>
     </application>
 

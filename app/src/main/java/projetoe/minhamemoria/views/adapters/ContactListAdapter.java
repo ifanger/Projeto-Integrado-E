@@ -1,15 +1,10 @@
 package projetoe.minhamemoria.views.adapters;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,8 +42,8 @@ public class ContactListAdapter extends RecyclerView.Adapter {
             super(view);
             contactName = (TextView) view.findViewById(R.id.text_name);
             contactNumber = (TextView) view.findViewById(R.id.text_number);
-            buttonDelete = (ImageButton) view.findViewById(R.id.button_delete);
-            buttonCall = (ImageButton) view.findViewById(R.id.button_call);
+            buttonDelete = (ImageButton) view.findViewById(R.id.button_edit);
+            buttonCall = (ImageButton) view.findViewById(R.id.button_remove);
         }
 
     }

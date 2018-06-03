@@ -71,16 +71,17 @@
             android:layout_height="match_parent"
             android:layout_margin="8dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             android:layout_weight="1"
             android:adjustViewBounds="true"
             android:background="@drawable/icon_shadow"
             android:elevation="3dp"
+            android:onClick="onListClick"
             android:padding="30dp"
             android:scaleType="fitCenter"
             android:src="@drawable/icon_checklist"
             tools:layout_editor_absoluteX="28dp"
-            tools:layout_editor_absoluteY="244dp"
-            android:layout_marginRight="16dp" />
+            tools:layout_editor_absoluteY="244dp" />
 
         <ImageButton
             android:id="@+id/button_pills"

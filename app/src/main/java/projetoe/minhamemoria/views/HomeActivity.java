@@ -19,4 +19,9 @@ public class HomeActivity extends AppCompatActivity {
         Intent contactIntent = new Intent(this, ContactActivity.class);
         startActivity(contactIntent);
     }
+
+    public void onListClick(View view) {
+        Intent contactIntent = new Intent(this, ListActivity.class);
+        startActivity(contactIntent);
+    }
 }
