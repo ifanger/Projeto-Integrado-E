@@ -1,8 +1,10 @@
 package projetoe.minhamemoria.views;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +20,10 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            AppUtils.requestPermissionToCall(this, "");
+        }
     }
 
     public void onContactClick(View view) {
@@ -34,6 +40,10 @@ public class HomeActivity extends AppCompatActivity {
 
     public void onSettingsClick(View view) {
         showActivity(SettingsActivity.class);
+    }
+
+    public void onAlarmClick(View view) {
+        showActivity(AlarmActivity.class);
     }
 
     private void showActivity(Class activityClass) {

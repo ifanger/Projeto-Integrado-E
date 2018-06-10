@@ -93,7 +93,7 @@ public class AppUtils {
         activity.startActivity(callIntent);
     }
 
-    private static void requestPermissionToCall(final Activity activity, final String number) {
+    public static void requestPermissionToCall(final Activity activity, final String number) {
         final AlertDialog alertDialog = new AlertDialog.Builder(activity)
                 .setTitle(R.string.str_permission_needed)
                 .setMessage(R.string.str_permission_call)

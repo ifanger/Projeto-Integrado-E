@@ -10,39 +10,40 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 
 import projetoe.minhamemoria.R;
-import projetoe.minhamemoria.controllers.CalendarItemController;
-import projetoe.minhamemoria.models.CalendarItem;
+import projetoe.minhamemoria.controllers.AlarmClockController;
+import projetoe.minhamemoria.models.AlarmClock;
 
-public class CalendarItemAdapter extends RecyclerView.Adapter {
-    private List<CalendarItem> calendarItems;
+public class AlarmAdapter extends RecyclerView.Adapter {
+    private List<AlarmClock> alarms;
     private Activity activity;
     private Context context;
-    private CalendarItemController controller;
+    private AlarmClockController controller;
 
-    public CalendarItemAdapter(List<CalendarItem> lists, Activity activity, CalendarItemController controller) {
-        this.calendarItems = lists;
+    public AlarmAdapter(List<AlarmClock> alarms, Activity activity, AlarmClockController controller) {
+        this.alarms = alarms;
         this.activity = activity;
         this.context = activity;
         this.controller = controller;
     }
 
-    public class ContactViewHolder extends RecyclerView.ViewHolder {
-        final TextView calendarItemTitle;
-        final TextView calendarItemDate;
-        final TextView calendarItemTime;
-        final ImageButton calendarItemDelete;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        final TextView alarmTitle;
+        final TextView alarmTime;
+        final ImageView alarmRepeat;
+        final ImageButton alarmDelete;
 
-        private ContactViewHolder(View view) {
+        private ViewHolder(View view) {
             super(view);
-            calendarItemTitle = (TextView) view.findViewById(R.id.txt_alarm_time);
-            calendarItemDate = (TextView) view.findViewById(R.id.text_calendar_date);
-            calendarItemTime = (TextView) view.findViewById(R.id.text_calendar_time);
-            calendarItemDelete = (ImageButton) view.findViewById(R.id.btn_delete_alarm);
+            alarmTitle = (TextView) view.findViewById(R.id.txt_alarm_title);
+            alarmTime = (TextView) view.findViewById(R.id.txt_alarm_time);
+            alarmRepeat = (ImageView) view.findViewById(R.id.image_alarm_repeat);
+            alarmDelete = (ImageButton) view.findViewById(R.id.btn_delete_alarm);
         }
 
     }
@@ -51,34 +52,34 @@ public class CalendarItemAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context)
-                .inflate(R.layout.adapter_calendar_items, parent, false);
+                .inflate(R.layout.adapter_alarm, parent, false);
 
-        return new ContactViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int position) {
-        ContactViewHolder contactViewHolder = (ContactViewHolder) holder;
+        ViewHolder viewHolder = (ViewHolder) holder;
 
-        final CalendarItem calendarItem = calendarItems.get(position);
-        contactViewHolder.calendarItemTitle.setText(calendarItem.getName());
-        contactViewHolder.calendarItemDate.setText(calendarItem.getDate());
-        contactViewHolder.calendarItemTime.setText(calendarItem.getTime());
+        final AlarmClock alarm = alarms.get(position);
+        viewHolder.alarmTitle.setText(alarm.getName());
+        viewHolder.alarmTime.setText(alarm.getTime());
+        viewHolder.alarmRepeat.setVisibility(alarm.isRepeat() ? View.VISIBLE : View.GONE);
 
-        contactViewHolder.calendarItemDelete.setOnClickListener(new View.OnClickListener() {
+        viewHolder.alarmDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                askToDeleteDialog(calendarItem);
+                askToDeleteDialog(alarm);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return calendarItems.size();
+        return alarms.size();
     }
 
-    private void askToDeleteDialog(final CalendarItem calendarItem) {
+    private void askToDeleteDialog(final AlarmClock calendarItem) {
         final AlertDialog alertDialog =
                 new AlertDialog.Builder(context)
                         .setTitle(R.string.str_delete_confirm)
@@ -87,7 +88,7 @@ public class CalendarItemAdapter extends RecyclerView.Adapter {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 controller.delete(calendarItem);
-                                calendarItems.remove(calendarItem);
+                                alarms.remove(calendarItem);
                                 notifyDataSetChanged();
                             }
                         })

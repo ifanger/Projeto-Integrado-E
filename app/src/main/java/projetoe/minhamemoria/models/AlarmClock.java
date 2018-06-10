@@ -9,13 +9,11 @@ public class AlarmClock {
     private String name;
     private boolean repeat;
     private String time;
-    private int hour;
-    private int minute;
 
-    public AlarmClock(String name, boolean repeat, String time) {
+    public AlarmClock(String name, boolean repeat, String time) throws NameException, TimeException {
         this.id = -1;
-        this.name = name;
         this.repeat = repeat;
+        this.setName(name);
         this.setTime(time);
     }
 
@@ -31,7 +29,10 @@ public class AlarmClock {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String name) throws NameException {
+        if(name.trim().length() > 25 || name.trim().length() < 2)
+            throw new NameException(NameException.INVALID_LENGTH);
+
         this.name = name;
     }
 
@@ -47,60 +48,35 @@ public class AlarmClock {
         return time;
     }
 
-    /**
-     * Conversão de string para números
-     * @param time Tempo de repetição de entrada
-     */
-    public void setTime(String time) {
-        //Verifica se a string de entrada está dentro do padrão:
-        //HH:MM
-        if(time.length() != 5 || !time.contains(":")) {
-            resetTime(); //Reseta hora
-            return;
-        }
+    public void setTime(String time) throws TimeException {
+        if(time.length() != 5)
+            throw new TimeException(TimeException.INVALID_LENGTH);
+
+        if(!time.contains(":"))
+            throw new TimeException(TimeException.INVALID_FORMAT);
+
+        String[] splitTime = time.split(":");
+
+        if(splitTime[0].length() != 2 || splitTime[1].length() != 2)
+            throw new TimeException(TimeException.INVALID_FORMAT);
 
         try {
-            //Dividimos em duas variáveis bs e as. (before split, after split)
-            //bs contém o conteúdo da string antes do ":" (no caso, a hora)
-            //as contém o conteúdo da string depois do ":" (no caso, os minutos)
-            String bs, as;
-            bs = time.split(":")[0];
-            as = time.split(":")[1];
-
-            this.hour = Integer.parseInt(bs);
-            this.minute = Integer.parseInt(as);
-            this.time = time;
-        } catch(Exception e) {
-            e.printStackTrace();
-            this.minute = 0;
-            this.hour = 0;
-            this.time = "00:00";
+            for (String v : splitTime)
+                Integer.parseInt(v);
+        } catch(NumberFormatException e) {
+            throw new TimeException(TimeException.INVALID_FORMAT);
         }
-    }
 
-    public void setTime(int hour, int minute) {
-        String strHour = hour + "";
-        String strMinute = minute + "";
-
-        strHour = "00".substring(strHour.length()) + strHour;
-        strMinute = "00".substring(strMinute.length()) + strMinute;
-
-        setTime(strHour + ":" + strMinute);
+        this.time = time;
     }
 
     public int getHour() {
-        return hour;
+        return Integer.parseInt(this.time.split(":")[0]);
     }
 
     public int getMinute() {
-        return minute;
+        return Integer.parseInt(this.time.split(":")[1]);
     }
-
-    private void resetTime() {
-        this.hour = 0;
-        this.minute = 0;
-    }
-
 
     @Override
     public boolean equals(Object o) {
@@ -132,5 +108,22 @@ public class AlarmClock {
                 ", repeat=" + repeat +
                 ", time=" + time +
                 '}';
+    }
+
+    public class NameException extends Throwable {
+        public final static String INVALID_LENGTH = "O tamanho do título deve ser entre 2 e 25 caracteres.";
+
+        public NameException(String message) {
+            super(message);
+        }
+    }
+
+    public class TimeException extends Throwable {
+        public final static String INVALID_LENGTH = "Você não escolheu uma hora.";
+        public final static String INVALID_FORMAT = "Você não escolheu uma hora.";
+
+        public TimeException(String message) {
+            super(message);
+        }
     }
 }

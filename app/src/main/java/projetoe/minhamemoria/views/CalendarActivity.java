@@ -51,8 +51,7 @@ public class CalendarActivity extends AppCompatActivity {
             public void run() {
                 init();
             }
-        });
-        init();
+        }).start();
     }
 
     private void init() {

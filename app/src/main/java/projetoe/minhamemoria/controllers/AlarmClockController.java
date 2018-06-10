@@ -37,7 +37,7 @@ public class AlarmClockController {
         return result;
     }
 
-    public List<AlarmClock> getAlarms() {
+    public List<AlarmClock> getAlarms() throws AlarmClock.NameException, AlarmClock.TimeException {
         List<AlarmClock> alarms = new ArrayList<>();
 
         Cursor cursor;
@@ -51,18 +51,14 @@ public class AlarmClockController {
             cursor.moveToFirst();
 
             while (!cursor.isAfterLast()) {
-                try {
-                    AlarmClock alarmClock = new AlarmClock(
-                            cursor.getString(cursor.getColumnIndex(AlarmClockContract.AlarmClockEntry.COLUMN_NAME)),
-                            cursor.getInt(cursor.getColumnIndex(AlarmClockContract.AlarmClockEntry.COLUMN_REPEAT)) == 1,
-                            cursor.getString(cursor.getColumnIndex(AlarmClockContract.AlarmClockEntry.COLUMN_TIME))
-                    );
+                AlarmClock alarmClock = new AlarmClock(
+                        cursor.getString(cursor.getColumnIndex(AlarmClockContract.AlarmClockEntry.COLUMN_NAME)),
+                        cursor.getInt(cursor.getColumnIndex(AlarmClockContract.AlarmClockEntry.COLUMN_REPEAT)) == 1,
+                        cursor.getString(cursor.getColumnIndex(AlarmClockContract.AlarmClockEntry.COLUMN_TIME))
+                );
 
-                    alarmClock.setId(cursor.getLong(cursor.getColumnIndex(AlarmClockContract.AlarmClockEntry._ID)));
-                    alarms.add(alarmClock);
-                } catch(Exception e) {
-                    e.printStackTrace();
-                }
+                alarmClock.setId(cursor.getLong(cursor.getColumnIndex(AlarmClockContract.AlarmClockEntry._ID)));
+                alarms.add(alarmClock);
                 cursor.moveToNext();
             }
 
@@ -118,7 +114,7 @@ public class AlarmClockController {
         return result > 0;
     }
 
-    public AlarmClock get(long id) throws Exception {
+    public AlarmClock get(long id) throws AlarmClock.NameException, AlarmClock.TimeException {
         AlarmClock alarmClock = new AlarmClock("Alarme Desconhecido", false, "00:00");
 
         Cursor cursor;

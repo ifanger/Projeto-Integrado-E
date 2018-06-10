@@ -108,7 +108,7 @@ public class CalendarItem {
 	}
 
 	public class NameException extends Throwable {
-		public final static String INVALID_LENGTH = "O tamanho do título deve ser entre 1 e 25 caracteres.";
+		public final static String INVALID_LENGTH = "O tamanho do título deve ser entre 2 e 25 caracteres.";
 
 		public NameException(String message) {
 			super(message);
@@ -116,8 +116,8 @@ public class CalendarItem {
 	}
 
 	public class DateException extends Throwable {
-		public final static String INVALID_LENGTH = "O tamanho da data deve ser 10.";
-		public final static String INVALID_INPUT = "O formato da data deve ser YYYY-mm-dd.";
+		public final static String INVALID_LENGTH = "Você não escolheu uma data.";
+		public final static String INVALID_INPUT = "Você não escolheu uma data.";
 
 		public DateException(String message) {
 			super(message);
@@ -125,8 +125,8 @@ public class CalendarItem {
 	}
 
 	public class TimeException extends Throwable {
-		public final static String INVALID_LENGTH = "O tamanho da hora deve ser 5.";
-		public final static String INVALID_FORMAT = "O formato da hora deve ser HH:mm.";
+		public final static String INVALID_LENGTH = "Você não escolheu uma hora.";
+		public final static String INVALID_FORMAT = "Você não escolheu uma hora.";
 
 		public TimeException(String message) {
 			super(message);
