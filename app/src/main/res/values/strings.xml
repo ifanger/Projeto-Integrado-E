@@ -30,4 +30,9 @@
     <string name="str_firedp">Bombeiros (193)</string>
     <string name="str_report">Disque-Denúncia (181)</string>
     <string name="str_sos_key">pref_sos</string>
+    <string name="your_events">Seus eventos</string>
+    <string name="str_calendar_title">Título do marcador</string>
+    <string name="str_define_date">Escolher data</string>
+    <string name="str_define_time">Escolher hora</string>
+    <string name="str_new_calendar_item">Novo marcador de calendário</string>
 </resources>

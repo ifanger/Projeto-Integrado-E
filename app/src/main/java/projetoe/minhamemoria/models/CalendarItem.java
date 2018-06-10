@@ -52,7 +52,7 @@ public class CalendarItem {
 		if(!time.contains(":"))
 			throw new TimeException(TimeException.INVALID_FORMAT);
 
-		String[] splitTime = date.split(":");
+		String[] splitTime = time.split(":");
 
 		if(splitTime[0].length() != 2 || splitTime[1].length() != 2)
 			throw new TimeException(TimeException.INVALID_FORMAT);
@@ -108,7 +108,7 @@ public class CalendarItem {
 	}
 
 	public class NameException extends Throwable {
-		public final static String INVALID_LENGTH = "The name length must be between 2 and 25.";
+		public final static String INVALID_LENGTH = "O tamanho do título deve ser entre 1 e 25 caracteres.";
 
 		public NameException(String message) {
 			super(message);
@@ -116,8 +116,8 @@ public class CalendarItem {
 	}
 
 	public class DateException extends Throwable {
-		public final static String INVALID_LENGTH = "The date length must be 10.";
-		public final static String INVALID_INPUT = "The date format must be YYYY-mm-dd.";
+		public final static String INVALID_LENGTH = "O tamanho da data deve ser 10.";
+		public final static String INVALID_INPUT = "O formato da data deve ser YYYY-mm-dd.";
 
 		public DateException(String message) {
 			super(message);
@@ -125,8 +125,8 @@ public class CalendarItem {
 	}
 
 	public class TimeException extends Throwable {
-		public final static String INVALID_LENGTH = "The time length must be 5.";
-		public final static String INVALID_FORMAT = "The time format must be HH:mm.";
+		public final static String INVALID_LENGTH = "O tamanho da hora deve ser 5.";
+		public final static String INVALID_FORMAT = "O formato da hora deve ser HH:mm.";
 
 		public TimeException(String message) {
 			super(message);

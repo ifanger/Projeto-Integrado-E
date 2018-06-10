@@ -58,7 +58,7 @@
         app:layout_constraintTop_toTopOf="@+id/btn_insert" />
 
     <Button
-        android:id="@+id/btn_delete"
+        android:id="@+id/btn_delete_calendar_item"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
