@@ -89,17 +89,18 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="8dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             android:layout_weight="1"
             android:adjustViewBounds="true"
             android:background="@drawable/icon_shadow"
             android:elevation="3dp"
+            android:onClick="onMedicineClick"
             android:padding="30dp"
             android:scaleType="fitCenter"
             android:src="@drawable/icon_pills"
             tools:layout_editor_absoluteX="224dp"
-            tools:layout_editor_absoluteY="244dp"
-            android:layout_marginLeft="16dp" />
+            tools:layout_editor_absoluteY="244dp" />
 
     </LinearLayout>
 

@@ -55,7 +55,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".views.HomeActivity" />
         </activity>
-        <activity android:name=".views.AlarmActivity"
+        <activity
+            android:name=".views.AlarmActivity"
+            android:parentActivityName=".views.HomeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".views.HomeActivity" />
+        </activity>
+        <activity android:name=".views.MedicineActivity"
             android:parentActivityName=".views.HomeActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

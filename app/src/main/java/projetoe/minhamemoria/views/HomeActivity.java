@@ -46,6 +46,10 @@ public class HomeActivity extends AppCompatActivity {
         showActivity(AlarmActivity.class);
     }
 
+    public void onMedicineClick(View view) {
+        showActivity(MedicineActivity.class);
+    }
+
     private void showActivity(Class activityClass) {
         Intent intent = new Intent(this, activityClass);
         startActivity(intent);

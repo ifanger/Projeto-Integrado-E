@@ -8,10 +8,12 @@ public class AlarmClock {
     private long id;
     private String name;
     private boolean repeat;
+    private boolean medicine;
     private String time;
 
     public AlarmClock(String name, boolean repeat, String time) throws NameException, TimeException {
         this.id = -1;
+        this.medicine = false;
         this.repeat = repeat;
         this.setName(name);
         this.setTime(time);
@@ -76,6 +78,14 @@ public class AlarmClock {
 
     public int getMinute() {
         return Integer.parseInt(this.time.split(":")[1]);
+    }
+
+    public boolean isMedicine() {
+        return medicine;
+    }
+
+    public void setMedicine(boolean medicine) {
+        this.medicine = medicine;
     }
 
     @Override

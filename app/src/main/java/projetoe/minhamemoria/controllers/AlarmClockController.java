@@ -20,7 +20,7 @@ public class AlarmClockController {
         dbHelper = new AlarmClockHelper(context);
     }
 
-    public long insert(AlarmClock alarmClock) {
+    public long add(AlarmClock alarmClock) {
         ContentValues values;
         long result;
 
@@ -29,6 +29,7 @@ public class AlarmClockController {
         values = new ContentValues();
         values.put(AlarmClockContract.AlarmClockEntry.COLUMN_NAME, alarmClock.getName());
         values.put(AlarmClockContract.AlarmClockEntry.COLUMN_TIME, alarmClock.getTime());
+        values.put(AlarmClockContract.AlarmClockEntry.COLUMN_REMEDIO, alarmClock.isMedicine() ? 1 : 0);
         values.put(AlarmClockContract.AlarmClockEntry.COLUMN_REPEAT, (alarmClock.isRepeat()) ? 1 : 0);
 
         result = db.insert(AlarmClockContract.AlarmClockEntry.TABLE_NAME, null, values);
@@ -41,11 +42,11 @@ public class AlarmClockController {
         List<AlarmClock> alarms = new ArrayList<>();
 
         Cursor cursor;
-        String[] fields =  {AlarmClockContract.AlarmClockEntry._ID, AlarmClockContract.AlarmClockEntry.COLUMN_NAME, AlarmClockContract.AlarmClockEntry.COLUMN_REPEAT, AlarmClockContract.AlarmClockEntry.COLUMN_TIME};
+        String[] fields =  {AlarmClockContract.AlarmClockEntry._ID, AlarmClockContract.AlarmClockEntry.COLUMN_NAME, AlarmClockContract.AlarmClockEntry.COLUMN_REPEAT, AlarmClockContract.AlarmClockEntry.COLUMN_REMEDIO, AlarmClockContract.AlarmClockEntry.COLUMN_TIME};
 
         db = dbHelper.getWritableDatabase();
 
-        cursor = db.query(AlarmClockContract.AlarmClockEntry.TABLE_NAME, fields, null, null, null, null, null, null);
+        cursor = db.query(AlarmClockContract.AlarmClockEntry.TABLE_NAME, fields, AlarmClockContract.AlarmClockEntry.COLUMN_REMEDIO + "=0", null, null, null, null, null);
 
         if(cursor != null) {
             cursor.moveToFirst();
@@ -56,7 +57,42 @@ public class AlarmClockController {
                         cursor.getInt(cursor.getColumnIndex(AlarmClockContract.AlarmClockEntry.COLUMN_REPEAT)) == 1,
                         cursor.getString(cursor.getColumnIndex(AlarmClockContract.AlarmClockEntry.COLUMN_TIME))
                 );
+                alarmClock.setMedicine(cursor.getInt(cursor.getColumnIndex(AlarmClockContract.AlarmClockEntry.COLUMN_REMEDIO)) == 1);
+                alarmClock.setId(cursor.getLong(cursor.getColumnIndex(AlarmClockContract.AlarmClockEntry._ID)));
+                alarms.add(alarmClock);
+                cursor.moveToNext();
+            }
 
+            cursor.close();
+        } else {
+            System.out.println("Invalid cursor pointer.");
+        }
+
+        db.close();
+
+        return alarms;
+    }
+
+    public List<AlarmClock> getAlarmMedicines() throws AlarmClock.NameException, AlarmClock.TimeException {
+        List<AlarmClock> alarms = new ArrayList<>();
+
+        Cursor cursor;
+        String[] fields =  {AlarmClockContract.AlarmClockEntry._ID, AlarmClockContract.AlarmClockEntry.COLUMN_NAME, AlarmClockContract.AlarmClockEntry.COLUMN_REPEAT, AlarmClockContract.AlarmClockEntry.COLUMN_REMEDIO, AlarmClockContract.AlarmClockEntry.COLUMN_TIME};
+
+        db = dbHelper.getWritableDatabase();
+
+        cursor = db.query(AlarmClockContract.AlarmClockEntry.TABLE_NAME, fields, AlarmClockContract.AlarmClockEntry.COLUMN_REMEDIO + "=1", null, null, null, null, null);
+
+        if(cursor != null) {
+            cursor.moveToFirst();
+
+            while (!cursor.isAfterLast()) {
+                AlarmClock alarmClock = new AlarmClock(
+                        cursor.getString(cursor.getColumnIndex(AlarmClockContract.AlarmClockEntry.COLUMN_NAME)),
+                        cursor.getInt(cursor.getColumnIndex(AlarmClockContract.AlarmClockEntry.COLUMN_REPEAT)) == 1,
+                        cursor.getString(cursor.getColumnIndex(AlarmClockContract.AlarmClockEntry.COLUMN_TIME))
+                );
+                alarmClock.setMedicine(cursor.getInt(cursor.getColumnIndex(AlarmClockContract.AlarmClockEntry.COLUMN_REMEDIO)) == 1);
                 alarmClock.setId(cursor.getLong(cursor.getColumnIndex(AlarmClockContract.AlarmClockEntry._ID)));
                 alarms.add(alarmClock);
                 cursor.moveToNext();
@@ -84,6 +120,7 @@ public class AlarmClockController {
         contentValues.put(AlarmClockContract.AlarmClockEntry.COLUMN_NAME, alarmClock.getName());
         contentValues.put(AlarmClockContract.AlarmClockEntry.COLUMN_REPEAT, alarmClock.isRepeat() ? 1 : 0);
         contentValues.put(AlarmClockContract.AlarmClockEntry.COLUMN_TIME, alarmClock.getTime());
+        contentValues.put(AlarmClockContract.AlarmClockEntry.COLUMN_REMEDIO, alarmClock.isMedicine() ? 1 : 0);
 
         db.update(AlarmClockContract.AlarmClockEntry.TABLE_NAME, contentValues, AlarmClockContract.AlarmClockEntry._ID + "=" + alarmClock.getId(), null);
         db.close();
@@ -128,6 +165,7 @@ public class AlarmClockController {
             alarmClock.setRepeat(
                     (cursor.getInt(cursor.getColumnIndex(AlarmClockContract.AlarmClockEntry.COLUMN_REPEAT)) == 1)
             );
+            alarmClock.setMedicine(cursor.getInt(cursor.getColumnIndex(AlarmClockContract.AlarmClockEntry.COLUMN_REMEDIO)) == 1);
             alarmClock.setTime(cursor.getString(cursor.getColumnIndex(AlarmClockContract.AlarmClockEntry.COLUMN_TIME)));
         }
 

@@ -7,7 +7,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
@@ -24,7 +23,7 @@ import projetoe.minhamemoria.controllers.AlarmClockController;
 import projetoe.minhamemoria.models.AlarmClock;
 import projetoe.minhamemoria.views.adapters.AlarmAdapter;
 
-public class AlarmActivity extends AppCompatActivity implements View.OnClickListener {
+public class MedicineActivity extends AppCompatActivity implements View.OnClickListener {
     AlarmClockController controller;
     FloatingActionButton btnAddAlarm;
     List<AlarmClock> alarms;
@@ -41,11 +40,10 @@ public class AlarmActivity extends AppCompatActivity implements View.OnClickList
 
         try {
             controller = new AlarmClockController(this);
-            alarms = controller.getAlarms();
+            alarms = controller.getAlarmMedicines();
 
             adapter = new AlarmAdapter(alarms, this, controller);
-            RecyclerView.LayoutManager layout = new LinearLayoutManager(this,
-                    LinearLayoutManager.VERTICAL, false);
+            RecyclerView.LayoutManager layout = new GridLayoutManager(this, 2);
 
             alarmListView.setHasFixedSize(true);
             alarmListView.setLayoutManager(layout);
@@ -105,17 +103,19 @@ public class AlarmActivity extends AppCompatActivity implements View.OnClickList
                                     alarmRepeat.isChecked(),
                                     markerTime.getText().toString());
 
+                            alarm.setMedicine(true);
+
                             controller.add(alarm);
                             alarms.add(alarm);
                             adapter.notifyDataSetChanged();
                         } catch (Exception e) {
-                            Toast.makeText(AlarmActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MedicineActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         } catch (AlarmClock.TimeException e) {
                             e.printStackTrace();
-                            Toast.makeText(AlarmActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MedicineActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         } catch (AlarmClock.NameException e) {
                             e.printStackTrace();
-                            Toast.makeText(AlarmActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MedicineActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 })

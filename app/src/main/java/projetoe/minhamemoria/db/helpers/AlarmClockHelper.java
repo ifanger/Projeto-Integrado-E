@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import projetoe.minhamemoria.db.contracts.AlarmClockContract;
 
 public class AlarmClockHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private static final String DATABASE_NAME = "AlarmClock.db";
 
@@ -16,6 +16,7 @@ public class AlarmClockHelper extends SQLiteOpenHelper {
                     AlarmClockContract.AlarmClockEntry._ID + " INTEGER PRIMARY KEY," +
                     AlarmClockContract.AlarmClockEntry.COLUMN_NAME + " TEXT, " +
                     AlarmClockContract.AlarmClockEntry.COLUMN_TIME + " DATE, " +
+                    AlarmClockContract.AlarmClockEntry.COLUMN_REMEDIO + " INT, " +
                     AlarmClockContract.AlarmClockEntry.COLUMN_REPEAT + " INT)";
 
     private static final String SQL_DELETE_ENTRIES =
